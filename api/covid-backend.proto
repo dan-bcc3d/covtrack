@@ -1,0 +1,166 @@
+syntax = "proto3";
+option go_package = "api";
+package covtrack.api;
+
+message Person {
+  int32 id = 1;  // Unique ID number for this person.
+  string name = 2;
+  string email = 3;
+	string slack_name = 4;
+
+  enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+
+  message PhoneNumber {
+    string number = 1;
+    PhoneType type = 2;
+  }
+
+  repeated PhoneNumber phones = 5;
+
+	Address address = 6;
+
+	string notes = 7;
+
+  google.protobuf.Timestamp last_updated = 8;
+
+}
+
+// Our address book file is just one of these.
+message ContactBook {
+  repeated Person people = 1;
+}
+
+message Address {
+
+	int32 id = 1;
+	string place_id = 2; // Google Maps Place ID (https://developers.google.com/places/web-service/place-id)
+	string address_line1 = 3;
+	string address_line2 = 4;
+	string postal_code = 5;
+	string city = 6;
+	string notes = 7;
+	google.protobuf.Timestamp last_updated = 8;
+
+}
+
+message Consumer {
+
+	int32 id = 1;
+	string name = 2;
+	repeated Person contact_persons = 3;
+	Address address = 4;
+
+  enum ConsumerType {
+    HEALTH_AUTHORITY = 0;
+    HOSPITAL = 1;
+    PRIMARY_CARE = 2;
+		SPECIALIST = 3;
+		OTHER = 4;
+  }
+
+	ConsumerType type = 5;
+	string description = 6;
+	string notes=7;
+	google.protobuf.Timestamp last_updated = 8;
+
+}
+
+message Producer {
+
+	int32 id = 1;
+	string name = 2;
+	repeated Person contact_persons = 3;
+	Address address = 4;
+	repeated Tool available_tools = 5;
+	string description = 6;
+	string notes = 7;
+	google.protobuf.Timestamp last_updated = 8;
+
+}
+
+message Tool {
+
+	ToolType type = 1;
+	int32 quantity = 2;
+
+}
+
+enum ToolType {
+
+	3D_PRINTER = 0;
+	LASER_CUTTER = 1;
+	HOLE_PUNCH = 2;
+	CNC_MILL = 8;
+	CNC_LATHE = 16;
+	OTHER = 4;
+
+}
+
+message Product {
+
+	int32 id = 1;
+	string name = 2;
+
+	message ProductPart {
+
+		Part part = 1;
+		int32 quantity = 2;
+
+	}
+
+	string description = 5;
+	string notes = 6;
+	google.protobuf.Timestamp last_updated = 7;
+
+}
+
+message Part {
+
+	int32 id = 1;
+	string name = 2;
+
+	message File {
+
+			int32 id = 1;
+			string name = 2;
+			string type = 3;
+			string url = 4;
+
+	}
+
+	repeated File files = 3;
+	repeated Tool required_tools = 4;
+	string description = 5;
+	string notes = 6;
+	google.protobuf.Timestamp last_updated = 7;
+
+}
+
+message Order {
+
+	int32 id = 1;
+	Consumer consumer = 2;
+	Product product = 3;
+	int32 quantity = 4;
+
+	enum Urgency {
+
+		LOW = 0;
+		URGENT = 1;
+		CRITICAL = 2;
+
+	}
+
+	Urgency urgency = 3
+
+	Address delivery_address = 6;
+
+	string description = 6;
+	string notes = 7;
+	google.protobuf.Timestamp last_updated = 8;
+
+}
