@@ -3,7 +3,7 @@ option go_package = "api";
 package covtrack.api;
 
 message Person {
-  int32 id = 1;  // Unique ID number for this person.
+  int32 id = 1;
   string name = 2;
   string email = 3;
 	string slack_name = 4;
@@ -12,6 +12,7 @@ message Person {
     MOBILE = 0;
     HOME = 1;
     WORK = 2;
+    OTHER = 3;
   }
 
   message PhoneNumber {
@@ -20,16 +21,12 @@ message Person {
   }
 
   repeated PhoneNumber phones = 5;
-
 	Address address = 6;
-
 	string notes = 7;
-
   google.protobuf.Timestamp last_updated = 8;
 
 }
 
-// Our address book file is just one of these.
 message ContactBook {
   repeated Person people = 1;
 }
@@ -90,14 +87,12 @@ message Tool {
 }
 
 enum ToolType {
-
 	3D_PRINTER = 0;
 	LASER_CUTTER = 1;
 	HOLE_PUNCH = 2;
 	CNC_MILL = 8;
 	CNC_LATHE = 16;
 	OTHER = 4;
-
 }
 
 message Product {
@@ -125,10 +120,10 @@ message Part {
 
 	message File {
 
-			int32 id = 1;
-			string name = 2;
-			string type = 3;
-			string url = 4;
+		int32 id = 1;
+		string name = 2;
+		string type = 3;
+		string url = 4;
 
 	}
 
@@ -148,19 +143,45 @@ message Order {
 	int32 quantity = 4;
 
 	enum Urgency {
-
 		LOW = 0;
 		URGENT = 1;
 		CRITICAL = 2;
-
 	}
 
-	Urgency urgency = 3
+	Urgency urgency = 5;
+  string status = 6;
+	Address delivery_address = 7;
+	string description = 8;
+	string notes = 9;
+	google.protobuf.Timestamp last_updated = 10;
 
-	Address delivery_address = 6;
+}
 
-	string description = 6;
-	string notes = 7;
-	google.protobuf.Timestamp last_updated = 8;
+message Courier {
+
+  int32 id = 1;
+  string name = 2;
+  repeated Person contact_persons = 3;
+  Address address = 4;
+  int32 radius_km = 5;
+  string description = 6;
+  string notes = 7;
+  google.protobuf.Timestamp last_updated = 8;
+
+}
+
+message Delivery {
+
+  int32 id = 1;
+  Order order = 2;
+  Address pickup_address = 3;
+  Address delivery_address = 4;
+  Courier courier = 5;
+  string description = 6;
+  string notes = 7;
+  google.protobuf.Timestamp scheduled_pickup = 8;
+  google.protobuf.Timestamp scheduled_delivery = 9;
+  google.protobuf.Timestamp last_updated = 10;
+  string status = 11;
 
 }
