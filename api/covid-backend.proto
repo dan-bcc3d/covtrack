@@ -100,24 +100,6 @@ message Product {
 	int32 id = 1;
 	string name = 2;
 
-	message ProductPart {
-
-		Part part = 1;
-		int32 quantity = 2;
-
-	}
-
-	string description = 5;
-	string notes = 6;
-	google.protobuf.Timestamp last_updated = 7;
-
-}
-
-message Part {
-
-	int32 id = 1;
-	string name = 2;
-
 	message File {
 
 		int32 id = 1;
@@ -129,6 +111,7 @@ message Part {
 
 	repeated File files = 3;
 	repeated Tool required_tools = 4;
+
 	string description = 5;
 	string notes = 6;
 	google.protobuf.Timestamp last_updated = 7;
